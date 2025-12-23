@@ -7,33 +7,42 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Menu, X, ChevronDown, MapPin, Globe } from "lucide-react";
 import { useState } from "react";
+import { useLanguage, Language } from "@/contexts/LanguageContext";
 
 const cities = [
-  { id: "tashkent", name: "Ташкент", flag: "🇺🇿" },
-  { id: "samarkand", name: "Самарканд", flag: "🇺🇿" },
-  { id: "bukhara", name: "Бухара", flag: "🇺🇿" },
-  { id: "almaty", name: "Алматы", flag: "🇰🇿" },
-  { id: "astana", name: "Астана", flag: "🇰🇿" },
-  { id: "baku", name: "Баку", flag: "🇦🇿" },
+  { id: "tashkent", name: "Ташкент", nameUz: "Toshkent", nameEn: "Tashkent", flag: "🇺🇿" },
+  { id: "samarkand", name: "Самарканд", nameUz: "Samarqand", nameEn: "Samarkand", flag: "🇺🇿" },
+  { id: "bukhara", name: "Бухара", nameUz: "Buxoro", nameEn: "Bukhara", flag: "🇺🇿" },
+  { id: "almaty", name: "Алматы", nameUz: "Olmaota", nameEn: "Almaty", flag: "🇰🇿" },
+  { id: "astana", name: "Астана", nameUz: "Ostona", nameEn: "Astana", flag: "🇰🇿" },
+  { id: "baku", name: "Баку", nameUz: "Boku", nameEn: "Baku", flag: "🇦🇿" },
 ];
 
 const languages = [
-  { id: "ru", name: "Русский", code: "RU" },
-  { id: "uz", name: "O'zbekcha", code: "UZ" },
-  { id: "en", name: "English", code: "EN" },
+  { id: "ru" as Language, name: "Русский", code: "RU" },
+  { id: "uz" as Language, name: "O'zbekcha", code: "UZ" },
+  { id: "en" as Language, name: "English", code: "EN" },
 ];
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCity, setSelectedCity] = useState(cities[0]);
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
+  const { language, setLanguage, t } = useLanguage();
+
+  const selectedLanguage = languages.find(l => l.id === language) || languages[0];
+
+  const getCityName = (city: typeof cities[0]) => {
+    if (language === "uz") return city.nameUz;
+    if (language === "en") return city.nameEn;
+    return city.name;
+  };
 
   const navItems = [
-    { label: "Все залы", href: "#gyms" },
-    { label: "Цены", href: "#pricing" },
-    { label: "Для компаний", href: "#companies" },
-    { label: "Партнёрам", href: "#partners" },
-    { label: "FAQ", href: "#faq" },
+    { label: t("nav.gyms"), href: "#gyms" },
+    { label: t("nav.pricing"), href: "#pricing" },
+    { label: t("nav.companies"), href: "#companies" },
+    { label: t("nav.partners"), href: "#partners" },
+    { label: t("nav.faq"), href: "#faq" },
   ];
 
   return (
@@ -66,7 +75,7 @@ const Header = () => {
             <DropdownMenuTrigger asChild>
               <button className="hidden md:flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-muted rounded-lg transition-colors">
                 <span>{selectedCity.flag}</span>
-                <span>{selectedCity.name}</span>
+                <span>{getCityName(selectedCity)}</span>
                 <ChevronDown className="w-4 h-4 opacity-60" />
               </button>
             </DropdownMenuTrigger>
@@ -80,7 +89,7 @@ const Header = () => {
                   }`}
                 >
                   <span>{city.flag}</span>
-                  <span>{city.name}</span>
+                  <span>{getCityName(city)}</span>
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -99,9 +108,9 @@ const Header = () => {
               {languages.map((lang) => (
                 <DropdownMenuItem
                   key={lang.id}
-                  onClick={() => setSelectedLanguage(lang)}
+                  onClick={() => setLanguage(lang.id)}
                   className={`flex items-center gap-2 cursor-pointer ${
-                    selectedLanguage.id === lang.id ? "bg-primary/10 text-primary" : ""
+                    language === lang.id ? "bg-primary/10 text-primary" : ""
                   }`}
                 >
                   <span className="font-medium">{lang.code}</span>
@@ -112,7 +121,7 @@ const Header = () => {
           </DropdownMenu>
 
           <Button variant="default" size="sm" className="hidden sm:flex">
-            Скачать
+            {t("nav.download")}
           </Button>
           
           {/* Mobile Menu Button */}
@@ -143,7 +152,7 @@ const Header = () => {
             {/* Mobile City Selector */}
             <div className="px-4 py-2 border-t border-border mt-2">
               <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
-                <MapPin className="w-3 h-3" /> Город
+                <MapPin className="w-3 h-3" /> {t("nav.city")}
               </p>
               <div className="flex flex-wrap gap-2">
                 {cities.map((city) => (
@@ -156,7 +165,7 @@ const Header = () => {
                         : "bg-muted text-foreground hover:bg-muted/80"
                     }`}
                   >
-                    {city.flag} {city.name}
+                    {city.flag} {getCityName(city)}
                   </button>
                 ))}
               </div>
@@ -165,15 +174,15 @@ const Header = () => {
             {/* Mobile Language Selector */}
             <div className="px-4 py-2">
               <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
-                <Globe className="w-3 h-3" /> Язык
+                <Globe className="w-3 h-3" /> {t("nav.language")}
               </p>
               <div className="flex flex-wrap gap-2">
                 {languages.map((lang) => (
                   <button
                     key={lang.id}
-                    onClick={() => setSelectedLanguage(lang)}
+                    onClick={() => setLanguage(lang.id)}
                     className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
-                      selectedLanguage.id === lang.id
+                      language === lang.id
                         ? "bg-primary text-primary-foreground"
                         : "bg-muted text-foreground hover:bg-muted/80"
                     }`}
@@ -185,7 +194,7 @@ const Header = () => {
             </div>
 
             <Button variant="default" className="mt-4 mx-4">
-              Скачать приложение
+              {t("nav.downloadApp")}
             </Button>
           </nav>
         </div>

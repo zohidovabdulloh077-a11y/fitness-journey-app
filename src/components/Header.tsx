@@ -1,9 +1,32 @@
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Menu, X, ChevronDown, MapPin, Globe } from "lucide-react";
 import { useState } from "react";
+
+const cities = [
+  { id: "tashkent", name: "Ташкент", flag: "🇺🇿" },
+  { id: "samarkand", name: "Самарканд", flag: "🇺🇿" },
+  { id: "bukhara", name: "Бухара", flag: "🇺🇿" },
+  { id: "almaty", name: "Алматы", flag: "🇰🇿" },
+  { id: "astana", name: "Астана", flag: "🇰🇿" },
+  { id: "baku", name: "Баку", flag: "🇦🇿" },
+];
+
+const languages = [
+  { id: "ru", name: "Русский", code: "RU" },
+  { id: "uz", name: "O'zbekcha", code: "UZ" },
+  { id: "en", name: "English", code: "EN" },
+];
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedCity, setSelectedCity] = useState(cities[0]);
+  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
 
   const navItems = [
     { label: "Все залы", href: "#gyms" },
@@ -14,7 +37,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/50">
       <div className="container flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
         <a href="/" className="flex items-center gap-2">
@@ -37,10 +60,57 @@ const Header = () => {
         </nav>
 
         {/* Right Side */}
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-            <span className="font-medium">🇺🇿 Ташкент</span>
-          </div>
+        <div className="flex items-center gap-2 md:gap-4">
+          {/* City Selector */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="hidden md:flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                <span>{selectedCity.flag}</span>
+                <span>{selectedCity.name}</span>
+                <ChevronDown className="w-4 h-4 opacity-60" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 bg-background border border-border shadow-lg z-[100]">
+              {cities.map((city) => (
+                <DropdownMenuItem
+                  key={city.id}
+                  onClick={() => setSelectedCity(city)}
+                  className={`flex items-center gap-2 cursor-pointer ${
+                    selectedCity.id === city.id ? "bg-primary/10 text-primary" : ""
+                  }`}
+                >
+                  <span>{city.flag}</span>
+                  <span>{city.name}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Language Selector */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="hidden md:flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-foreground/80 hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                <Globe className="w-4 h-4" />
+                <span>{selectedLanguage.code}</span>
+                <ChevronDown className="w-4 h-4 opacity-60" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-40 bg-background border border-border shadow-lg z-[100]">
+              {languages.map((lang) => (
+                <DropdownMenuItem
+                  key={lang.id}
+                  onClick={() => setSelectedLanguage(lang)}
+                  className={`flex items-center gap-2 cursor-pointer ${
+                    selectedLanguage.id === lang.id ? "bg-primary/10 text-primary" : ""
+                  }`}
+                >
+                  <span className="font-medium">{lang.code}</span>
+                  <span className="text-muted-foreground">{lang.name}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Button variant="default" size="sm" className="hidden sm:flex">
             Скачать
           </Button>
@@ -69,7 +139,52 @@ const Header = () => {
                 {item.label}
               </a>
             ))}
-            <Button variant="default" className="mt-4">
+            
+            {/* Mobile City Selector */}
+            <div className="px-4 py-2 border-t border-border mt-2">
+              <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
+                <MapPin className="w-3 h-3" /> Город
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {cities.map((city) => (
+                  <button
+                    key={city.id}
+                    onClick={() => setSelectedCity(city)}
+                    className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                      selectedCity.id === city.id
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    {city.flag} {city.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile Language Selector */}
+            <div className="px-4 py-2">
+              <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
+                <Globe className="w-3 h-3" /> Язык
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {languages.map((lang) => (
+                  <button
+                    key={lang.id}
+                    onClick={() => setSelectedLanguage(lang)}
+                    className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                      selectedLanguage.id === lang.id
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    {lang.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <Button variant="default" className="mt-4 mx-4">
               Скачать приложение
             </Button>
           </nav>

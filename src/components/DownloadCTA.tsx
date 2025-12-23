@@ -1,7 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Apple, Play } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const DownloadCTA = () => {
+  const { t, language } = useLanguage();
+
+  const availableIn = { ru: "Доступно в", uz: "Mavjud", en: "Available on" };
+  const startToday = { ru: "Сегодня — лучшее время для старта", uz: "Bugun — boshlash uchun eng yaxshi vaqt", en: "Today is the best time to start" };
+
   return (
     <section className="py-20 md:py-32 bg-background overflow-hidden">
       <div className="container">
@@ -14,10 +20,10 @@ const DownloadCTA = () => {
             {/* Left Content */}
             <div className="flex-1 text-center lg:text-left">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-primary-foreground mb-4">
-                Скачайте приложение<br />и начните заниматься
+                {t("download.title")}
               </h2>
               <p className="text-lg text-primary-foreground/80 mb-8 max-w-md mx-auto lg:mx-0">
-                Сегодня — лучшее время для старта
+                {startToday[language]}
               </p>
 
               {/* App Store Buttons */}
@@ -29,8 +35,8 @@ const DownloadCTA = () => {
                 >
                   <Apple className="w-6 h-6" />
                   <div className="text-left">
-                    <div className="text-xs opacity-80">Доступно в</div>
-                    <div className="font-semibold">App Store</div>
+                    <div className="text-xs opacity-80">{availableIn[language]}</div>
+                    <div className="font-semibold">{t("download.appStore")}</div>
                   </div>
                 </Button>
                 
@@ -41,8 +47,8 @@ const DownloadCTA = () => {
                 >
                   <Play className="w-6 h-6" />
                   <div className="text-left">
-                    <div className="text-xs opacity-80">Доступно в</div>
-                    <div className="font-semibold">Google Play</div>
+                    <div className="text-xs opacity-80">{availableIn[language]}</div>
+                    <div className="font-semibold">{t("download.googlePlay")}</div>
                   </div>
                 </Button>
               </div>

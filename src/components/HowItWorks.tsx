@@ -1,40 +1,43 @@
 import { Download, MapPin, QrCode } from "lucide-react";
-
-const steps = [
-  {
-    number: "01",
-    title: "Скачайте приложение",
-    description: "Купите абонемент или получите бесплатный гостевой от друга",
-    icon: Download,
-    color: "bg-mint",
-  },
-  {
-    number: "02",
-    title: "Выберите, куда сходить",
-    description: "Найдите подходящий зал рядом с домом или работой",
-    icon: MapPin,
-    color: "bg-lavender",
-  },
-  {
-    number: "03",
-    title: "Приходите на занятие",
-    description: "На входе в зал отсканируйте QR-код и занимайтесь",
-    icon: QrCode,
-    color: "bg-coral",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const HowItWorks = () => {
+  const { t } = useLanguage();
+
+  const steps = [
+    {
+      number: "01",
+      title: t("how.step1.title"),
+      description: t("how.step1.desc"),
+      icon: Download,
+      color: "bg-mint",
+    },
+    {
+      number: "02",
+      title: t("how.step2.title"),
+      description: t("how.step2.desc"),
+      icon: MapPin,
+      color: "bg-lavender",
+    },
+    {
+      number: "03",
+      title: t("how.step3.title"),
+      description: t("how.step3.desc"),
+      icon: QrCode,
+      color: "bg-coral",
+    },
+  ];
+
   return (
     <section className="py-20 md:py-32 bg-background">
       <div className="container">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-foreground mb-4">
-            Как посетить первое занятие?
+            {t("how.title")}
           </h2>
           <p className="text-lg text-muted-foreground">
-            Всего три простых шага до вашей первой тренировки
+            {t("how.subtitle")}
           </p>
         </div>
 

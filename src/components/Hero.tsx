@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles, Star } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Hero = () => {
+  const { t } = useLanguage();
+
   return (
     <section className="relative min-h-screen hero-gradient overflow-hidden pt-20">
       {/* Decorative shapes */}
@@ -19,16 +22,16 @@ const Hero = () => {
         {/* Left Content */}
         <div className="flex-1 text-primary-foreground space-y-6 lg:space-y-8 text-center lg:text-left">
           <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight slide-up">
-            Абонемент на все<br />виды спорта
+            {t("hero.title")}<br />{t("hero.titleHighlight")}
           </h1>
           
           <p className="text-lg md:text-xl text-primary-foreground/80 max-w-lg mx-auto lg:mx-0 slide-up" style={{ animationDelay: "0.1s" }}>
-            Йога, плавание, фитнес, танцы и ещё десятки занятий в одном приложении
+            {t("hero.subtitle")}
           </p>
           
           <div className="slide-up" style={{ animationDelay: "0.2s" }}>
             <Button variant="hero" size="lg" className="group">
-              Скачать приложение
+              {t("hero.cta")}
               <Sparkles className="ml-2 group-hover:rotate-12 transition-transform" size={20} />
             </Button>
           </div>
@@ -41,7 +44,7 @@ const Hero = () => {
               ))}
             </div>
             <span className="text-sm font-medium text-primary-foreground/90">
-              Forbes Топ-30 мобильных приложений
+              {t("hero.forbes")}
             </span>
           </div>
         </div>
@@ -57,7 +60,7 @@ const Hero = () => {
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-lavender" />
                     <div>
-                      <p className="text-lg font-bold text-foreground">Swimming</p>
+                      <p className="text-lg font-bold text-foreground">{t("hero.swimming")}</p>
                       <p className="text-xs text-muted-foreground">Today · 12:00 · 60min</p>
                     </div>
                   </div>
@@ -96,7 +99,7 @@ const Hero = () => {
                   <circle cx="15" cy="9" r="1" fill="currentColor"/>
                 </svg>
               </div>
-              <span className="text-sm font-bold text-foreground/90">Йога</span>
+              <span className="text-sm font-bold text-foreground/90">{t("hero.yoga")}</span>
             </div>
           </div>
           
@@ -108,7 +111,7 @@ const Hero = () => {
                   <path d="M6 12V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4"/>
                 </svg>
               </div>
-              <span className="text-xs font-bold text-primary-foreground">Плавание</span>
+              <span className="text-xs font-bold text-primary-foreground">{t("hero.swimming")}</span>
             </div>
           </div>
           
@@ -122,7 +125,7 @@ const Hero = () => {
                   <rect x="8" y="6" width="8" height="12" rx="1"/>
                 </svg>
               </div>
-              <span className="text-sm font-bold text-foreground/90">Фитнес</span>
+              <span className="text-sm font-bold text-foreground/90">{t("hero.fitness")}</span>
             </div>
           </div>
         </div>

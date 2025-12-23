@@ -1,28 +1,46 @@
 import { Dumbbell, Waves, Heart, Zap, Music, Swords } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Benefits = () => {
+  const { t } = useLanguage();
+
+  const sportLabels = {
+    gym: { ru: "Тренажёрка", uz: "Trenajyorka", en: "Gym" },
+    pool: { ru: "Бассейн", uz: "Basseyn", en: "Pool" },
+    yoga: { ru: "Йога", uz: "Yoga", en: "Yoga" },
+    crossfit: { ru: "Кроссфит", uz: "Krossfit", en: "CrossFit" },
+    dance: { ru: "Танцы", uz: "Raqs", en: "Dance" },
+    martial: { ru: "Единоборства", uz: "Jang san'atlari", en: "Martial Arts" },
+  };
+
+  const { language } = useLanguage();
+
+  const getSportLabel = (key: keyof typeof sportLabels) => {
+    return sportLabels[key][language];
+  };
+
   return (
     <section className="py-20 md:py-32 bg-background" id="benefits">
       <div className="container">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-foreground mb-4">
-            Новый способ<br />добавить спорт в свою жизнь
+            {t("benefits.title")}
           </h2>
           <p className="text-lg text-muted-foreground">
-            Приложение, в котором мы собрали несколько десятков активностей. Всё, от йоги до кроссфита
+            {t("benefits.subtitle")}
           </p>
         </div>
 
         {/* Sport Icons Row */}
         <div className="flex flex-wrap justify-center gap-4 mb-16 md:mb-24">
           {[
-            { icon: Dumbbell, color: "bg-mint", label: "Тренажёрка" },
-            { icon: Waves, color: "bg-primary/20", label: "Бассейн" },
-            { icon: Heart, color: "bg-pink", label: "Йога" },
-            { icon: Zap, color: "bg-gold", label: "Кроссфит" },
-            { icon: Music, color: "bg-lavender", label: "Танцы" },
-            { icon: Swords, color: "bg-coral", label: "Единоборства" },
+            { icon: Dumbbell, color: "bg-mint", label: getSportLabel("gym") },
+            { icon: Waves, color: "bg-primary/20", label: getSportLabel("pool") },
+            { icon: Heart, color: "bg-pink", label: getSportLabel("yoga") },
+            { icon: Zap, color: "bg-gold", label: getSportLabel("crossfit") },
+            { icon: Music, color: "bg-lavender", label: getSportLabel("dance") },
+            { icon: Swords, color: "bg-coral", label: getSportLabel("martial") },
           ].map((item) => (
             <div
               key={item.label}
@@ -43,9 +61,9 @@ const Benefits = () => {
             <div className="w-16 h-16 bg-mint rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <Dumbbell className="w-8 h-8 text-foreground" />
             </div>
-            <h3 className="text-xl lg:text-2xl font-bold text-foreground mb-3">Разнообразие</h3>
+            <h3 className="text-xl lg:text-2xl font-bold text-foreground mb-3">{t("benefits.gyms.title")}</h3>
             <p className="text-muted-foreground">
-              Найдётся вид спорта даже для тех, кто уже попробовал всё
+              {t("benefits.gyms.desc")}
             </p>
           </div>
 
@@ -57,9 +75,9 @@ const Benefits = () => {
                 <path d="M12 12h.01" />
               </svg>
             </div>
-            <h3 className="text-xl lg:text-2xl font-bold text-foreground mb-3">Рассрочка</h3>
+            <h3 className="text-xl lg:text-2xl font-bold text-foreground mb-3">{t("benefits.flexible.title")}</h3>
             <p className="text-muted-foreground">
-              Это как подписка на фитнес. Платите не сразу, а по частям
+              {t("benefits.flexible.desc")}
             </p>
           </div>
 
@@ -71,9 +89,9 @@ const Benefits = () => {
                 <circle cx="12" cy="10" r="3" />
               </svg>
             </div>
-            <h3 className="text-xl lg:text-2xl font-bold text-foreground mb-3">Удобство</h3>
+            <h3 className="text-xl lg:text-2xl font-bold text-foreground mb-3">{t("benefits.savings.title")}</h3>
             <p className="text-muted-foreground">
-              Залы в любой точке города. Рядом с домом или работой
+              {t("benefits.savings.desc")}
             </p>
           </div>
         </div>
